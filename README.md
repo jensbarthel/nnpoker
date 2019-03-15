@@ -1,2 +1,2 @@
 # nnpoker
-No Nonsense Poker
+Kotlin Texas Hold 'Em
