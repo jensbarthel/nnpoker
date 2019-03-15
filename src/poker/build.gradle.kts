@@ -1,5 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val junitVersion = "5.4.0"
+val springBootWebVersion = "2.1.3.RELEASE"
+
+
 plugins {
     kotlin("jvm") version "1.3.21"
 }
@@ -12,7 +16,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.4.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
 }
 
 tasks.withType<KotlinCompile> {
