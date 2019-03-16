@@ -19,6 +19,14 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+
+
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
