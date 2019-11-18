@@ -1,9 +1,10 @@
 package domain.game.hand
 
-import domain.game.hand.RankOpinion.FLUSH
 import domain.game.deck.Rank.*
-import domain.game.deck.Suit.*
+import domain.game.deck.Suit.CLUBS
+import domain.game.deck.Suit.SPADES
 import domain.game.deck.of
+import domain.game.hand.HandRank.Opinion.FLUSH
 import org.amshove.kluent.`should be`
 import org.amshove.kluent.`should contain same`
 import org.junit.jupiter.api.BeforeEach
