@@ -1,22 +1,23 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val junitVersion = "5.4.0"
-val springBootWebVersion = "2.1.3.RELEASE"
-
+val junitVersion = "5.5.2"
+val kluentVersion = "1.56"
 
 plugins {
-    kotlin("jvm") version "1.3.21"
+    kotlin("jvm") version "1.3.50"
 }
 
 version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
-
 dependencies {
     implementation(kotlin("stdlib"))
-    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation(platform("org.junit:junit-bom:$junitVersion"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.amshove.kluent:kluent:$kluentVersion")
 }
 
 tasks.withType<Test> {
@@ -28,5 +29,5 @@ tasks.withType<Test> {
 
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "12"
 }

@@ -1,17 +1,12 @@
-package domain.game
+package domain.game.hand
 
 import domain.game.deck.Card
 import domain.game.deck.Rank
 
-class Hand(val cards: Set<Card>) {
+class Hand(private val cards: Set<Card>) {
 
     init {
         require(cards.size >= 2)
-    }
-
-    fun isRoyalFlush(): Boolean {
-
-        return isFlush() && isStraight()
     }
 
     fun isStraight(): Boolean {
