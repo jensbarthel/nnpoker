@@ -5,8 +5,8 @@ import domain.game.deck.Suit
 import domain.game.deck.bySuit
 import domain.game.hand.HandRank.Opinion.FLUSH
 
-class FlushRanker {
-    fun rank(cards: Set<Card>): HandRank = when (val possibleFlushCards = flushCards(cards)) {
+class FlushRanker : HandRanker {
+    override fun rank(cards: Set<Card>): HandRank = when (val possibleFlushCards = flushCards(cards)) {
         emptyMap<Suit, List<Card>>() -> HandRank.NONE
         else -> HandRank(FLUSH, extractFlushCards(possibleFlushCards))
     }
