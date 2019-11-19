@@ -1,8 +1,7 @@
 package domain.game.hand
 
 import domain.game.deck.Rank.*
-import domain.game.deck.Suit.CLUBS
-import domain.game.deck.Suit.SPADES
+import domain.game.deck.Suit.*
 import domain.game.deck.of
 import domain.game.hand.HandRank.Opinion.FLUSH
 import org.amshove.kluent.`should be`
@@ -21,7 +20,7 @@ class FlushRanker_When_ranking {
     @Test
     fun `If hand is a flush Then a flush is evaluated`() {
         // Arrange
-        val flushHand = setOf(
+        val flush = setOf(
             FIVE of CLUBS,
             SIX of CLUBS,
             JACK of CLUBS,
@@ -29,12 +28,18 @@ class FlushRanker_When_ranking {
             KING of CLUBS
         )
 
+
+        val hand = flush + setOf(
+            SIX of HEARTS,
+            TWO of DIAMONDS
+        )
+
         // Act
-        val rank = ranker.rank(flushHand)
+        val rank = ranker.rank(hand)
 
         // Assert
         rank.opinion `should be` FLUSH
-        rank.matchingCards `should contain same` flushHand
+        rank.matchingCards `should contain same` flush
     }
 
     @Test
