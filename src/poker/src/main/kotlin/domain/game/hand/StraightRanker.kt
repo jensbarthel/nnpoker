@@ -21,7 +21,11 @@ class StraightRanker : HandRanker {
         return if (sortedStraights.any()) {
 
             val straightCards =
-                sortedStraights.last().map { it.toRank() }.map { (cardsByRank[it] ?: error("Illegal state")).first() }
+                sortedStraights
+                    .last()
+                    .takeLast(5)
+                    .map { it.toRank() }
+                    .map { (cardsByRank[it] ?: error("Illegal state")).first() }
                     .toSet()
             HandRank(STRAIGHT, straightCards)
         } else {
