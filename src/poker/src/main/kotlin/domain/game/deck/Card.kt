@@ -1,14 +1,14 @@
 package domain.game.deck
 
-data class Card(val suit: Suit, val rank: Rank) : Comparable<Card> {
+data class Card(val suit: Suit, val face: Face) : Comparable<Card> {
     override fun compareTo(other: Card): Int {
-        return rank.compareTo(other.rank)
+        return face.compareTo(other.face)
     }
 
-    override fun toString(): String = "$rank of $suit"
+    override fun toString(): String = "$face of $suit"
 }
 
 fun Collection<Card>.bySuit() = this.groupBy { it.suit }
-fun Collection<Card>.byRank() = this.groupBy { it.rank }
+fun Collection<Card>.byFace() = this.groupBy { it.face }
 
-infix fun Rank.of(suit: Suit) = Card(suit, this)
+infix fun Face.of(suit: Suit) = Card(suit, this)

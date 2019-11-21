@@ -1,11 +1,10 @@
 package domain.game.hand
 
 import domain.game.deck.Card
-import domain.game.deck.Rank
-import domain.game.deck.Rank.*
-import domain.game.deck.byRank
+import domain.game.deck.Face
+import domain.game.deck.Face.*
+import domain.game.deck.byFace
 import domain.game.hand.HandRank.Companion.NONE
-import domain.game.hand.HandRank.Opinion
 import domain.game.hand.HandRank.Opinion.*
 
 class StraightRanker : HandRanker {
@@ -14,8 +13,8 @@ class StraightRanker : HandRanker {
             return NONE
         }
 
-        val cardsByRank = cards.byRank()
-        val sortedStraightRanks = cardsByRank.keys.map { it.straightRank() }.sorted()
+        val cardsByFace = cards.byFace()
+        val sortedStraightRanks = cardsByFace.keys.map { it.straightRank() }.sorted()
         val adjustedStraightRanks = handleAceForWheel(sortedStraightRanks)
         val sortedStraights = splitIntoSequences(adjustedStraightRanks).filter { it.size >= 5 }
         return if (sortedStraights.any()) {
@@ -24,8 +23,8 @@ class StraightRanker : HandRanker {
                 sortedStraights
                     .last()
                     .takeLast(5)
-                    .map { it.toRank() }
-                    .map { (cardsByRank[it] ?: error("Illegal state")).first() }
+                    .map { it.toFace() }
+                    .map { (cardsByFace[it] ?: error("Illegal state")).first() }
                     .toSet()
             HandRank(STRAIGHT, straightCards)
         } else {
@@ -33,11 +32,11 @@ class StraightRanker : HandRanker {
         }
     }
 
-    private fun splitIntoSequences(cardsToRank: List<Int>): List<MutableList<Int>> {
-        var currentSequence = mutableListOf(cardsToRank[0])
+    private fun splitIntoSequences(cards: List<Int>): List<MutableList<Int>> {
+        var currentSequence = mutableListOf(cards[0])
         val rankSequences = mutableListOf(currentSequence)
-        for ((index, currentRankPrecedence) in cardsToRank.withIndex().drop(1)) {
-            if (cardsToRank[index - 1] == currentRankPrecedence - 1) {
+        for ((index, currentRankPrecedence) in cards.withIndex().drop(1)) {
+            if (cards[index - 1] == currentRankPrecedence - 1) {
                 currentSequence.add(currentRankPrecedence)
             } else {
                 currentSequence = mutableListOf(currentRankPrecedence)
@@ -55,7 +54,7 @@ class StraightRanker : HandRanker {
 
     // fun toCon
 
-    private fun Rank.straightRank() = when (this) {
+    private fun Face.straightRank() = when (this) {
         ACE -> 0
         TWO -> 1
         THREE -> 2
@@ -71,7 +70,7 @@ class StraightRanker : HandRanker {
         KING -> 12
     }
 
-    private fun Int.toRank() = when (this) {
+    private fun Int.toFace() = when (this) {
         0, 13 -> ACE
         1 -> TWO
         2 -> THREE

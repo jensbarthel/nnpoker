@@ -1,6 +1,6 @@
 package domain.game.hand
 
-import domain.game.deck.Rank.*
+import domain.game.deck.Face.*
 import domain.game.deck.Suit.*
 import domain.game.deck.of
 import domain.game.hand.HandRank.Companion.NONE

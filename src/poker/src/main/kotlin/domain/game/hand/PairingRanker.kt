@@ -1,14 +1,14 @@
 package domain.game.hand
 
 import domain.game.deck.Card
-import domain.game.deck.Rank
-import domain.game.deck.byRank
+import domain.game.deck.Face
+import domain.game.deck.byFace
 import domain.game.hand.HandRank.Companion.NONE
 import domain.game.hand.HandRank.Opinion.*
 
 class PairingRanker : HandRanker {
     override fun rank(cards: Set<Card>): HandRank {
-        val cardsByRank = cards.byRank().toSortedMap(Comparator.reverseOrder())
+        val cardsByRank = cards.byFace().toSortedMap(Comparator.reverseOrder())
         val quads = cardsByRank.filter { it.value.size == 4 }
         val trips = cardsByRank.filter { it.value.size == 3 }
         val pairs = cardsByRank.filter { it.value.size == 2 }
@@ -20,15 +20,15 @@ class PairingRanker : HandRanker {
         }
     }
 
-    private fun pairOrDoublePair(pairs: Map<Rank, List<Card>>, cards: Set<Card>): HandRank = when(pairs.size) {
+    private fun pairOrDoublePair(pairs: Map<Face, List<Card>>, cards: Set<Card>): HandRank = when(pairs.size) {
         0 -> NONE
         1 -> HandRank(PAIR, fillWithHighestCards(pairs.values.first(), cards))
         else -> HandRank(DOUBLE_PAIR, fillWithHighestCards(pairs.values.take(2).flatten(), cards))
     }
 
     private fun tripsOrFullHouse(
-        pairs: Map<Rank, List<Card>>,
-        trips: Map<Rank, List<Card>>,
+        pairs: Map<Face, List<Card>>,
+        trips: Map<Face, List<Card>>,
         cards: Set<Card>
     ): HandRank {
         val pairsWithoutTrips = pairs.minus(trips.keys)

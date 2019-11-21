@@ -1,7 +1,7 @@
 package domain.game.hand
 
 import domain.game.deck.Card
-import domain.game.deck.Rank.ACE
+import domain.game.deck.Face.ACE
 import domain.game.hand.HandRank.Companion.NONE
 import domain.game.hand.HandRank.Opinion
 
@@ -11,7 +11,7 @@ class StraightFlushRanker(private val flushRanker: FlushRanker, private val stra
         val intersectedCards = intersectSubMatcherCards(cards)
         return when {
             intersectedCards.size != 5 -> NONE
-            intersectedCards.last().rank == ACE -> HandRank(Opinion.ROYAL_FLUSH, intersectedCards)
+            intersectedCards.last().face == ACE -> HandRank(Opinion.ROYAL_FLUSH, intersectedCards)
             else -> HandRank(Opinion.STRAIGHT_FLUSH, intersectedCards)
         }
     }

@@ -1,6 +1,6 @@
 package domain.game.deck
 
-enum class Rank
+enum class Face
 {
     TWO,
     THREE,

@@ -21,7 +21,7 @@ class Card_When_comparing {
     @ParameterizedTest
     @MethodSource("sameRankDifferentSuits")
     fun `Then suit is irrelevant`(firstSuit: Suit, secondSuit: Suit) {
-        Assertions.assertTrue { Card(firstSuit, Rank.KING) < Card(secondSuit, Rank.ACE) }
+        Assertions.assertTrue { Card(firstSuit, Face.KING) < Card(secondSuit, Face.ACE) }
     }
 
 
