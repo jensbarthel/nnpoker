@@ -6,7 +6,9 @@ import domain.game.deck.of
 import domain.game.hand.HandRank.Opinion.*
 import org.amshove.kluent.`should be`
 import org.amshove.kluent.`should contain all`
+import org.amshove.kluent.shouldHaveSize
 import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import util.parameterizedTest
 
@@ -37,7 +39,6 @@ class PairingRanker_When_ranking {
     @TestFactory
     fun `If hand contains match Then it is ranked correctly`(): List<DynamicTest> {
         return parameterizedTest(
-            Triple(none, NONE, setOf()),
             Triple(pair + (EIGHT of SPADES) + (SEVEN of CLUBS), PAIR, pair),
             Triple(doublePairs + (TWO of SPADES) + (SEVEN of CLUBS), DOUBLE_PAIR, doublePairs),
             Triple(threeDoublePairs + (JACK of SPADES) + (SEVEN of CLUBS), DOUBLE_PAIR, threeDoublePairs),
@@ -52,7 +53,18 @@ class PairingRanker_When_ranking {
 
             // Assert
             rank.opinion `should be` expectedOpinion
+            rank.matchingCards shouldHaveSize 5
             rank.matchingCards `should contain all` finalHandSuggestion
         }
+    }
+
+    @Test
+    fun `If hand contains no match Then none is ranked`() {
+        // Act
+        val rank = PairingRanker().rank(none)
+
+        // Assert
+        rank.opinion `should be` NONE
+        rank.matchingCards shouldHaveSize 0
     }
 }

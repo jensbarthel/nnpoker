@@ -19,5 +19,4 @@ data class HandRank(val opinion: Opinion, val matchingCards: Set<Card>) {
     companion object {
         val NONE = HandRank(Opinion.NONE, emptySet())
     }
-
 }

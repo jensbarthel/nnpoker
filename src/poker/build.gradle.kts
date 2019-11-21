@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val junitVersion = "5.5.2"
 val kluentVersion = "1.56"
+val mockkVersion = "1.9.3"
 
 plugins {
     kotlin("jvm") version "1.3.50"
@@ -18,6 +19,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
 }
 
 tasks.withType<Test> {
