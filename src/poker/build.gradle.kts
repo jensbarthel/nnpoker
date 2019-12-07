@@ -5,7 +5,7 @@ val kluentVersion = "1.56"
 val mockkVersion = "1.9.3"
 
 plugins {
-    kotlin("jvm") version "1.3.50"
+    kotlin("jvm") version "1.3.60"
 }
 
 version = "1.0-SNAPSHOT"
