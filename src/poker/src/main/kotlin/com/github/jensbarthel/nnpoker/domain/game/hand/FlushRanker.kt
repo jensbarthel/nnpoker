@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 class FlushRanker : HandRanker {
     override fun rank(cards: Set<Card>): HandRank = when (val possibleFlushCards = flushCards(cards)) {
         emptyMap<Suit, List<Card>>() -> HandRank.NONE
-        else -> HandRank(FLUSH, extractFlushCards(possibleFlushCards))
+        else -> BasicRank(FLUSH, extractFlushCards(possibleFlushCards))
     }
 
     private fun extractFlushCards(possibleFlushCards: Map<Suit, List<Card>>) =

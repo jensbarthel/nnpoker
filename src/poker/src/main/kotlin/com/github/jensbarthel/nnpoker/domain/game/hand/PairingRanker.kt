@@ -15,7 +15,7 @@ class PairingRanker : HandRanker {
         val trips = cardsByRank.filter { it.value.size == 3 }
         val pairs = cardsByRank.filter { it.value.size == 2 }
         return when {
-            quads.any() -> HandRank(QUADS, fillWithHighestCards(quads.values.first(), cards))
+            quads.any() -> BasicRank(QUADS, fillWithHighestCards(quads.values.first(), cards))
             trips.any() -> tripsOrFullHouse(pairs, trips, cards)
             pairs.any() -> pairOrDoublePair(pairs, cards)
             else -> NONE
@@ -24,8 +24,8 @@ class PairingRanker : HandRanker {
 
     private fun pairOrDoublePair(pairs: Map<Face, List<Card>>, cards: Set<Card>): HandRank = when(pairs.size) {
         0 -> NONE
-        1 -> HandRank(PAIR, fillWithHighestCards(pairs.values.first(), cards))
-        else -> HandRank(DOUBLE_PAIR, fillWithHighestCards(pairs.values.take(2).flatten(), cards))
+        1 -> BasicRank(PAIR, fillWithHighestCards(pairs.values.first(), cards))
+        else -> BasicRank(DOUBLE_PAIR, fillWithHighestCards(pairs.values.take(2).flatten(), cards))
     }
 
     private fun tripsOrFullHouse(
@@ -37,9 +37,9 @@ class PairingRanker : HandRanker {
         val tripsCards = trips.values.first()
         return if (pairsWithoutTrips.any()) {
             val fullHousePair = pairsWithoutTrips.values.first()
-            HandRank(FULL_HOUSE, (tripsCards + fullHousePair).toSet())
+            BasicRank(FULL_HOUSE, (tripsCards + fullHousePair).toSet())
         } else {
-            HandRank(TRIPS, fillWithHighestCards(tripsCards, cards))
+            BasicRank(TRIPS, fillWithHighestCards(tripsCards, cards))
         }
     }
 

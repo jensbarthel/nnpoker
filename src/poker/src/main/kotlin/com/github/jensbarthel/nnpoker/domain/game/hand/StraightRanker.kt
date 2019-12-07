@@ -28,7 +28,7 @@ class StraightRanker : HandRanker {
                     .map { it.toFace() }
                     .map { (cardsByFace[it] ?: error("Illegal state")).first() }
                     .toSet()
-            HandRank(STRAIGHT, straightCards)
+            BasicRank(STRAIGHT, straightCards)
         } else {
             NONE
         }

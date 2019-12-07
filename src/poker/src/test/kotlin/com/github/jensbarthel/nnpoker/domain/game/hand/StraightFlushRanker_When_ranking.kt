@@ -50,8 +50,8 @@ class StraightFlushRanker_When_ranking {
         )
         { (cards, expectedOpinion, finalHandSuggestion) ->
             // Arrange
-            every { straightRanker.rank(cards) } returns HandRank(STRAIGHT, finalHandSuggestion)
-            every { flushRanker.rank(cards) } returns HandRank(FLUSH, finalHandSuggestion)
+            every { straightRanker.rank(cards) } returns BasicRank(STRAIGHT, finalHandSuggestion)
+            every { flushRanker.rank(cards) } returns BasicRank(FLUSH, finalHandSuggestion)
 
             // Act
             val rank = straightFlushRanker.rank(cards)
@@ -65,12 +65,12 @@ class StraightFlushRanker_When_ranking {
     @Test
     fun `If hand contains flush and non matching straight Then rank none`() {
         // Arrange
-        every { flushRanker.rank(separateFlushAndStraight) } returns HandRank(
+        every { flushRanker.rank(separateFlushAndStraight) } returns BasicRank(
             FLUSH,
             separateFlushAndStraight.take(5).toSet()
         )
 
-        every { straightRanker.rank(separateFlushAndStraight) } returns HandRank(
+        every { straightRanker.rank(separateFlushAndStraight) } returns BasicRank(
             STRAIGHT,
             separateFlushAndStraight.drop(1).toSet()
         )

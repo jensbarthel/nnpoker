@@ -13,8 +13,8 @@ class StraightFlushRanker(private val flushRanker: FlushRanker, private val stra
         val intersectedCards = intersectSubMatcherCards(cards)
         return when {
             intersectedCards.size != 5 -> NONE
-            intersectedCards.last().face == ACE -> HandRank(Opinion.ROYAL_FLUSH, intersectedCards)
-            else -> HandRank(Opinion.STRAIGHT_FLUSH, intersectedCards)
+            intersectedCards.last().face == ACE -> BasicRank(Opinion.ROYAL_FLUSH, intersectedCards)
+            else -> BasicRank(Opinion.STRAIGHT_FLUSH, intersectedCards)
         }
     }
 
