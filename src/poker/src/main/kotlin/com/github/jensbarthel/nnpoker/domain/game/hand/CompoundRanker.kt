@@ -19,7 +19,7 @@ class CompoundRanker(
             pairingRanker,
             straightRanker,
             highCardRanker
-        ).map { it.rank(cards) }.maxBy { it.opinion }!!
+        ).map { it.rank(cards) }.maxBy { it.opinion.precedence } ?: throw IllegalStateException()
 
         require(highestRank != NONE) { "Hand rank must be valid" }
         return highestRank
