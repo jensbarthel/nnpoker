@@ -3,6 +3,7 @@ package com.github.jensbarthel.nnpoker.domain.game.hand
 import com.github.jensbarthel.nnpoker.domain.game.deck.Face.*
 import com.github.jensbarthel.nnpoker.domain.game.deck.Suit.*
 import com.github.jensbarthel.nnpoker.domain.game.deck.of
+import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Companion.NONE
 import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Opinion.FLUSH
 import org.amshove.kluent.`should be`
 import org.amshove.kluent.`should contain same`
@@ -57,6 +58,6 @@ class FlushRanker_When_ranking {
         val rank = ranker.rank(flushHand)
 
         // Assert
-        rank `should be` HandRank.NONE
+        rank `should be` NONE
     }
 }

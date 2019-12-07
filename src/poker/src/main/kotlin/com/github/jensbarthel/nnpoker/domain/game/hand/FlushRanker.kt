@@ -4,7 +4,9 @@ import com.github.jensbarthel.nnpoker.domain.game.deck.Card
 import com.github.jensbarthel.nnpoker.domain.game.deck.Suit
 import com.github.jensbarthel.nnpoker.domain.game.deck.bySuit
 import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Opinion.FLUSH
+import org.springframework.stereotype.Component
 
+@Component
 class FlushRanker : HandRanker {
     override fun rank(cards: Set<Card>): HandRank = when (val possibleFlushCards = flushCards(cards)) {
         emptyMap<Suit, List<Card>>() -> HandRank.NONE

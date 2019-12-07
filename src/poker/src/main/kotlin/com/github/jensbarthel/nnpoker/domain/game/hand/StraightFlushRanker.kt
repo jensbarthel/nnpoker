@@ -4,7 +4,9 @@ import com.github.jensbarthel.nnpoker.domain.game.deck.Card
 import com.github.jensbarthel.nnpoker.domain.game.deck.Face.ACE
 import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Companion.NONE
 import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Opinion
+import org.springframework.stereotype.Component
 
+@Component
 class StraightFlushRanker(private val flushRanker: FlushRanker, private val straightRanker: StraightRanker) :
     HandRanker {
     override fun rank(cards: Set<Card>): HandRank {

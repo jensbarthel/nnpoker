@@ -5,7 +5,9 @@ import com.github.jensbarthel.nnpoker.domain.game.deck.Face
 import com.github.jensbarthel.nnpoker.domain.game.deck.byFace
 import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Companion.NONE
 import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Opinion.*
+import org.springframework.stereotype.Component
 
+@Component
 class PairingRanker : HandRanker {
     override fun rank(cards: Set<Card>): HandRank {
         val cardsByRank = cards.byFace().toSortedMap(Comparator.reverseOrder())

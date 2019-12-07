@@ -5,6 +5,7 @@ import com.github.jensbarthel.nnpoker.domain.game.deck.Suit.*
 import com.github.jensbarthel.nnpoker.domain.game.deck.of
 import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Opinion.*
 import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.amshove.kluent.`should be`
@@ -17,6 +18,9 @@ import util.parameterizedTest
 
 @ExtendWith(MockKExtension::class)
 class StraightFlushRanker_When_ranking {
+    @InjectMockKs
+    private lateinit var straightFlushRanker: StraightFlushRanker
+
     @MockK
     private lateinit var straightRanker: StraightRanker
 
@@ -50,7 +54,7 @@ class StraightFlushRanker_When_ranking {
             every { flushRanker.rank(cards) } returns HandRank(FLUSH, finalHandSuggestion)
 
             // Act
-            val rank = StraightFlushRanker(flushRanker, straightRanker).rank(cards)
+            val rank = straightFlushRanker.rank(cards)
 
             // Assert
             rank.opinion `should be` expectedOpinion
@@ -72,10 +76,10 @@ class StraightFlushRanker_When_ranking {
         )
 
         // Act
-        val rank = StraightFlushRanker(flushRanker, straightRanker).rank(separateFlushAndStraight)
+        val rank = straightFlushRanker.rank(separateFlushAndStraight)
 
         // Assert
-        rank.opinion `should be` HandRank.Opinion.NONE
+        rank.opinion `should be` NONE
         rank.matchingCards shouldHaveSize 0
     }
 }
