@@ -1,6 +1,5 @@
 package com.github.jensbarthel.nnpoker.domain.game.hand
 
-import com.github.jensbarthel.nnpoker.domain.game.deck.Face
 import com.github.jensbarthel.nnpoker.domain.game.deck.Face.*
 import com.github.jensbarthel.nnpoker.domain.game.deck.Suit.DIAMONDS
 import com.github.jensbarthel.nnpoker.domain.game.deck.Suit.SPADES
@@ -9,7 +8,6 @@ import org.amshove.kluent.`should throw`
 import org.amshove.kluent.invoking
 import org.junit.jupiter.api.TestFactory
 import util.parameterizedTest
-import java.lang.IllegalArgumentException
 
 class PairRank_When_initializing {
     @TestFactory
