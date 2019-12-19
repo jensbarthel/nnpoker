@@ -33,10 +33,12 @@ class PairingRanker : HandRanker {
         trips: Map<Face, List<Card>>,
         cards: Set<Card>
     ): HandRank {
-        val pairsWithoutTrips = pairs.minus(trips.keys)
+        require(!trips.values.any { it.size != 3})
+        require(!pairs.values.any { it.size != 2})
+
         val tripsCards = trips.values.first()
-        return if (pairsWithoutTrips.any()) {
-            val fullHousePair = pairsWithoutTrips.values.first()
+        return if (pairs.any()) {
+            val fullHousePair = pairs.values.first()
             BasicRank(FULL_HOUSE, (tripsCards + fullHousePair).toSet())
         } else {
             TripsRank(fillWithHighestCards(tripsCards, cards), trips.keys.first())
