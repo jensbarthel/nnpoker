@@ -53,7 +53,7 @@ sealed class HandRank(val opinion: Opinion, val matchingCards: Set<Card>) : Comp
 
 class BasicRank(opinion: Opinion, matchingCards: Set<Card>) : HandRank(opinion, matchingCards)
 
-abstract class KickerComparingRank(opinion: Opinion, matchingCards: Set<Card>) : HandRank(opinion, matchingCards){
+sealed class KickerComparingRank(opinion: Opinion, matchingCards: Set<Card>) : HandRank(opinion, matchingCards){
     override fun compareTo(other: HandRank): Int = when (other) {
         is KickerComparingRank -> compareKickerTo(other)
         else -> super.compareTo(other)
