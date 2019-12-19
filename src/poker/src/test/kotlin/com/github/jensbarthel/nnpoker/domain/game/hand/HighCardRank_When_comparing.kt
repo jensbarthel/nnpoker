@@ -21,7 +21,7 @@ internal class HighCardRank_When_comparing {
         Pair(PAIR, -1)
     ) { (otherOpinion, expectedComparison) ->
         // Arrange
-        val otherRank = mockk<HandRank>().also { every { it.opinion } returns otherOpinion }
+        val otherRank = BasicRank(otherOpinion, emptySet())
 
         // Act
         val comparison = HighCardRank(mockk()).compareTo(otherRank)

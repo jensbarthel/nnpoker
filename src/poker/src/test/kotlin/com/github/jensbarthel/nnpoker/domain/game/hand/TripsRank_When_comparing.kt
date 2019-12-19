@@ -3,10 +3,7 @@ package com.github.jensbarthel.nnpoker.domain.game.hand
 import com.github.jensbarthel.nnpoker.domain.game.deck.Face.*
 import com.github.jensbarthel.nnpoker.domain.game.deck.Suit.*
 import com.github.jensbarthel.nnpoker.domain.game.deck.of
-import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Opinion.DOUBLE_PAIR
-import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Opinion.HIGH_CARD
-import io.mockk.every
-import io.mockk.mockk
+import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Opinion.*
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be greater than`
 import org.amshove.kluent.`should be less than`
@@ -14,36 +11,36 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import util.parameterizedTest
 
-class PairRank_When_comparing {
+class TripsRank_When_comparing {
 
-    private val pairOfAces = setOf(ACE of DIAMONDS, ACE of SPADES)
+    private val tripsOfAces = setOf(ACE of DIAMONDS, ACE of SPADES, ACE of HEARTS)
 
-    private val pairOfTwos = setOf(TWO of DIAMONDS, TWO of SPADES)
+    private val tripsOfTwos = setOf(TWO of DIAMONDS, TWO of SPADES, TWO of HEARTS)
 
     @TestFactory
     fun `If opinions are different Then they are compared`() = parameterizedTest(
-        Pair(HIGH_CARD, 1),
-        Pair(DOUBLE_PAIR, -1)
+        Pair(DOUBLE_PAIR, 1),
+        Pair(STRAIGHT, -1)
     ) { (otherOpinion, expectedComparison) ->
         // Arrange
         val otherRank = BasicRank(otherOpinion, emptySet())
 
         // Act
-        val comparison = PairRank(pairOfAces, ACE).compareTo(otherRank)
+        val comparison = TripsRank(tripsOfAces, ACE).compareTo(otherRank)
 
         // Assert
         comparison `should be equal to` expectedComparison
     }
 
     @Test
-    fun `If opinion is pair Then higher pair has higher rank`() {
+    fun `If opinion is trips Then higher trips has higher rank`() {
         // Arrange
-        val higherPairRank = PairRank(pairOfAces, ACE)
-        val lowerPairRank = PairRank(pairOfTwos, TWO)
+        val higherTripsRank = TripsRank(tripsOfAces, ACE)
+        val lowerTripsRank = TripsRank(tripsOfTwos, TWO)
 
         // Assert
-        higherPairRank.compareTo(lowerPairRank) `should be greater than` 0
-        lowerPairRank.compareTo(higherPairRank) `should be less than` 0
+        higherTripsRank.compareTo(lowerTripsRank) `should be greater than` 0
+        lowerTripsRank.compareTo(higherTripsRank) `should be less than` 0
     }
 
     @TestFactory
@@ -54,8 +51,8 @@ class PairRank_When_comparing {
 
     ) {(kicker, otherKicker, expected) ->
         // Arrange
-        val rank = PairRank(pairOfTwos + kicker, TWO)
-        val otherRank = PairRank(pairOfTwos + otherKicker, TWO)
+        val rank = TripsRank(tripsOfTwos + kicker, TWO)
+        val otherRank = TripsRank(tripsOfTwos + otherKicker, TWO)
 
         // Assert
         rank.compareTo(otherRank) `should be equal to` expected
