@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component
 @Component
 class PairingRanker : HandRanker {
     override fun rank(cards: Set<Card>): HandRank {
-        val cardsByRank = cards.byFace().toSortedMap(Comparator.reverseOrder())
-        val quads = cardsByRank.filter { it.value.size == 4 }
-        val trips = cardsByRank.filter { it.value.size == 3 }
-        val pairs = cardsByRank.filter { it.value.size == 2 }
+        val cardsByFace = cards.byFace().toSortedMap(Comparator.reverseOrder())
+        val quads = cardsByFace.filter { it.value.size == 4 }
+        val trips = cardsByFace.filter { it.value.size == 3 }
+        val pairs = cardsByFace.filter { it.value.size == 2 }
         return when {
             quads.any() -> BasicRank(QUADS, fillWithHighestCards(quads.values.first(), cards))
             trips.any() -> tripsOrFullHouse(pairs, trips, cards)
@@ -24,7 +24,7 @@ class PairingRanker : HandRanker {
 
     private fun pairOrDoublePair(pairs: Map<Face, List<Card>>, cards: Set<Card>): HandRank = when(pairs.size) {
         0 -> NONE
-        1 -> BasicRank(PAIR, fillWithHighestCards(pairs.values.first(), cards))
+        1 -> PairRank(fillWithHighestCards(pairs.values.first(), cards), pairs.keys.first())
         else -> BasicRank(DOUBLE_PAIR, fillWithHighestCards(pairs.values.take(2).flatten(), cards))
     }
 
@@ -39,7 +39,7 @@ class PairingRanker : HandRanker {
             val fullHousePair = pairsWithoutTrips.values.first()
             BasicRank(FULL_HOUSE, (tripsCards + fullHousePair).toSet())
         } else {
-            BasicRank(TRIPS, fillWithHighestCards(tripsCards, cards))
+            TripsRank(fillWithHighestCards(tripsCards, cards), trips.keys.first())
         }
     }
 
