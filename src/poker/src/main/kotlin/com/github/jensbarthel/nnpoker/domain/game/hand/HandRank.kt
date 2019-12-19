@@ -2,6 +2,7 @@ package com.github.jensbarthel.nnpoker.domain.game.hand
 
 import com.github.jensbarthel.nnpoker.domain.game.deck.Card
 import com.github.jensbarthel.nnpoker.domain.game.deck.Face
+import com.github.jensbarthel.nnpoker.domain.game.deck.byFace
 import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Opinion.PAIR
 
 sealed class HandRank(val opinion: Opinion, val matchingCards: Set<Card>) : Comparable<HandRank> {
@@ -26,22 +27,19 @@ sealed class HandRank(val opinion: Opinion, val matchingCards: Set<Card>) : Comp
     object NoneRank : HandRank(Opinion.NONE, emptySet()) {
         override fun compareTo(other: HandRank) = opinion.compareTo(other.opinion)
     }
-}
 
-class BasicRank(opinion: Opinion, matchingCards: Set<Card>) : HandRank(opinion, matchingCards) {
-    override fun compareTo(other: HandRank): Int = opinion.compareTo(other.opinion)
-}
+    protected fun compareKickerTo(other: HandRank): Int =
+        compareHighestCards(
+            matchingCards.sortedDescending(),
+            other.matchingCards.sortedDescending()
+        )
 
-class HighCardRank(matchingCards: Set<Card>) : HandRank(Opinion.HIGH_CARD, matchingCards) {
-    override fun compareTo(other: HandRank): Int {
-        return when (other) {
-            is HighCardRank -> compareHighestCards(
-                matchingCards.sortedDescending(),
-                other.matchingCards.sortedDescending()
-            )
-            else -> opinion.compareTo(other.opinion)
+    protected fun compareFaceAndKicker(face: Face, otherFace: Face, other: HandRank): Int =
+        when (val faceComparison = face.compareTo(otherFace)) {
+            0 -> compareKickerTo(other)
+            else -> faceComparison
         }
-    }
+
 
     private fun compareHighestCards(cards: List<Card>, otherCards: List<Card>): Int {
         require(cards.size == otherCards.size) { "Can only compare cards of same amount" }
@@ -54,14 +52,28 @@ class HighCardRank(matchingCards: Set<Card>) : HandRank(Opinion.HIGH_CARD, match
             }
         }
     }
+
 }
 
-class PairRank(matchingCards: Set<Card>, val pairFace: Face) : HandRank(PAIR, matchingCards) {
-    override fun compareTo(other: HandRank): Int {
-        return when (other) {
-            is PairRank -> pairFace.compareTo(other.pairFace)
-            else -> opinion.compareTo(other.opinion)
-        }
+class BasicRank(opinion: Opinion, matchingCards: Set<Card>) : HandRank(opinion, matchingCards) {
+    override fun compareTo(other: HandRank): Int = opinion.compareTo(other.opinion)
+}
+
+class HighCardRank(matchingCards: Set<Card>) : HandRank(Opinion.HIGH_CARD, matchingCards) {
+    override fun compareTo(other: HandRank): Int = when (other) {
+        is HighCardRank -> compareKickerTo(other)
+        else -> opinion.compareTo(other.opinion)
+    }
+}
+
+class PairRank(matchingCards: Set<Card>, private val pairFace: Face) : HandRank(PAIR, matchingCards) {
+    init {
+        require(matchingCards.byFace()[pairFace]?.size ?: 0 == 2) { "Matching cards must contain pair face" }
     }
 
+    override fun compareTo(other: HandRank): Int = when (other) {
+        is PairRank -> compareFaceAndKicker(pairFace, other.pairFace, other)
+        else -> opinion.compareTo(other.opinion)
+    }
 }
+

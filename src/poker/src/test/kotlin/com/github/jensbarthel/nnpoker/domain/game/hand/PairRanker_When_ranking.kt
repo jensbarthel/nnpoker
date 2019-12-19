@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import util.parameterizedTest
 
-class PairingRanker_When_ranking {
+class PairRanker_When_ranking {
     private val quads = setOf(ACE of SPADES, JACK of DIAMONDS, ACE of DIAMONDS, ACE of CLUBS, ACE of HEARTS)
 
     private val fullHouse = setOf(ACE of SPADES, JACK of HEARTS, ACE of DIAMONDS, ACE of CLUBS, JACK of DIAMONDS)
