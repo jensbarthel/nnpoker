@@ -44,7 +44,7 @@ class TripsRank_When_comparing {
     }
 
     @TestFactory
-    fun `If pairs are equal Then kicker decides ranking`() = parameterizedTest(
+    fun `If trips are equal Then kicker decides ranking`() = parameterizedTest(
         Triple(FOUR of CLUBS, THREE of CLUBS, 1),
         Triple(FOUR of CLUBS, FIVE of CLUBS, -1),
         Triple(FIVE of CLUBS, FIVE of DIAMONDS, 0)

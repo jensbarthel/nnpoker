@@ -3,6 +3,7 @@ package com.github.jensbarthel.nnpoker.domain.game.hand
 import com.github.jensbarthel.nnpoker.domain.game.deck.Card
 import com.github.jensbarthel.nnpoker.domain.game.deck.Face
 import com.github.jensbarthel.nnpoker.domain.game.deck.byFace
+import com.github.jensbarthel.nnpoker.domain.game.deck.bySuit
 import com.github.jensbarthel.nnpoker.domain.game.hand.HandRank.Opinion.*
 
 sealed class HandRank(val opinion: Opinion, val matchingCards: Set<Card>) : Comparable<HandRank> {
@@ -48,12 +49,11 @@ sealed class HandRank(val opinion: Opinion, val matchingCards: Set<Card>) : Comp
             }
         }
     }
-
 }
 
 class BasicRank(opinion: Opinion, matchingCards: Set<Card>) : HandRank(opinion, matchingCards)
 
-sealed class KickerComparingRank(opinion: Opinion, matchingCards: Set<Card>) : HandRank(opinion, matchingCards){
+abstract class KickerComparingRank(opinion: Opinion, matchingCards: Set<Card>) : HandRank(opinion, matchingCards) {
     override fun compareTo(other: HandRank): Int = when (other) {
         is KickerComparingRank -> compareKickerTo(other)
         else -> super.compareTo(other)
@@ -71,5 +71,12 @@ class PairRank(matchingCards: Set<Card>, pairFace: Face) : KickerComparingRank(P
 class TripsRank(matchingCards: Set<Card>, tripsFace: Face) : KickerComparingRank(TRIPS, matchingCards) {
     init {
         require(matchingCards.byFace()[tripsFace]?.size ?: 0 == 3) { "Matching cards must contain trips face" }
+    }
+}
+
+class FlushRank(matchingCards: Set<Card>) : KickerComparingRank(FLUSH, matchingCards) {
+    init {
+        require(matchingCards.size == 5) { "Matching cards be of size 5" }
+        require(matchingCards.bySuit().size == 1) { "All cards must be of same suit" }
     }
 }
